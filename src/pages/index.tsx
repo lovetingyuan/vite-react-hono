@@ -2,14 +2,12 @@ import { useState } from 'react'
 import reactLogo from '../assets/react.svg'
 import viteLogo from '/vite.svg'
 import honoLogo from '../assets/hono.svg'
-import NavBar from './_components/NavBar'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-      <NavBar />
       <div className="flex gap-8 mt-10">
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="w-16 h-16" alt="Vite logo" />

@@ -4,13 +4,25 @@ export default function NavBar() {
   return (
     <div className="navbar bg-base-100 shadow-sm">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl">daisyUI</a>
+        <Link to="/" className="btn btn-ghost text-xl">
+          home
+        </Link>
       </div>
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1">
           <li>
             <Link to="/main" className="link link-hover">
               main page
+            </Link>
+          </li>
+          <li>
+            <Link to="/main/foo" className="link link-hover">
+              foo page
+            </Link>
+          </li>
+          <li>
+            <Link to="/main/foo/bar" className="link link-hover">
+              bar page
             </Link>
           </li>
           <li>

@@ -1,38 +1,80 @@
-import { createBrowserRouter, RouterProvider } from 'react-router'
+import { createBrowserRouter, RouterProvider, type RouteObject } from 'react-router'
 
 import ReactDOM from 'react-dom/client'
 
 import React from 'react'
 
-const pages = import.meta.glob(['./pages/**/index.tsx', './pages/404.tsx'])
-const notFound = pages['./pages/404.tsx']
-// @ts-expect-error ignore
-if (notFound) {
-  delete pages['./pages/404.tsx']
+type Comp = { default: React.ComponentType }
+
+const pages = import.meta.glob<Comp>(['./pages/**/index.tsx', './pages/**/layout.tsx'])
+const notFound = import.meta.glob<Comp>('./pages/404.tsx')
+
+type RouteMetaItem = {
+  $page?: () => Promise<Comp>
+  $layout?: () => Promise<Comp>
+} & {
+  [K in string as K extends '$page' | '$layout' ? never : K]: RouteMetaItem
 }
-const routes = Object.keys(pages).map(file => {
-  const path = file.slice(7, -10) || '/'
-  const pathStr = path
-    .split('/')
-    .filter(p => !p.startsWith('_'))
-    .map(seg => {
-      if (seg.startsWith('[') && seg.endsWith(']')) {
-        return ':' + seg.slice(1, -1)
-      }
-      return seg
-    })
-    .join('/')
-  return {
-    path: pathStr,
-    // @ts-expect-error ignore
-    Component: React.lazy(pages[file]),
+
+const pagesMap: RouteMetaItem = {}
+
+Object.keys(pages).map(file => {
+  const paths = file.split('/')
+  let map = pagesMap
+  const comp = paths.pop() // index.tsx or layout.tsx
+  paths.shift() // .
+  paths.shift() // pages
+  paths.unshift('/') // route path
+  for (const p of paths) {
+    map[p] ??= {}
+    map = map[p]
   }
+  const key = comp === 'index.tsx' ? '$page' : '$layout'
+  map[key] = pages[file]
 })
-if (notFound) {
+
+/**
+ * 接受当前路由名称，路由配置，以及父级路由数组
+ */
+function buildRoute(route: string, config: RouteMetaItem, routes: RouteObject[] = []) {
+  const children: RouteObject[] = []
+  route = route.startsWith('[') && route.endsWith(']') ? ':' + route.slice(1, -1) : route
+  const router: RouteObject = {
+    path: route,
+    // Component: null,
+    children,
+  }
+  if (config.$layout) {
+    if (config.$page) {
+      children.push({
+        index: true,
+        Component: React.lazy(config.$page),
+      })
+      delete config.$page
+    }
+    router.Component = React.lazy(config.$layout)
+    delete config.$layout
+  } else if (config.$page) {
+    router.Component = React.lazy(config.$page)
+    delete config.$page
+  }
+  for (const key in config) {
+    if (!key.startsWith('_')) {
+      buildRoute(key, config[key], children)
+    }
+  }
+  routes.push(router)
+  return routes
+}
+
+// console.log('pages', pages)
+// console.log('routes', pagesMap)
+const routes = buildRoute('/', pagesMap['/'])
+
+if (notFound['./pages/404.tsx']) {
   routes.push({
     path: '*',
-    // @ts-expect-error ignore
-    Component: React.lazy(notFound),
+    Component: React.lazy(notFound['./pages/404.tsx']),
   })
 }
 console.log(routes)
