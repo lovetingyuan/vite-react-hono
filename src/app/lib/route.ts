@@ -27,6 +27,9 @@ Object.keys(pages).map(file => {
   segments.unshift('/') // route path
   for (let i = 0; i < segments.length; i++) {
     const segment = segments[i]
+    if (segment.startsWith('_')) {
+      return
+    }
     if (segment.startsWith('[...') && segment.endsWith(']')) {
       if (i !== segments.length - 1) {
         throw new Error(`Splats route(${segment}) must be the last segment of the path: ${file}`)
@@ -45,7 +48,7 @@ Object.keys(pages).map(file => {
   const key = comp === 'index.tsx' ? PageKey : LayoutKey
   map[key] = pages[file]
 })
-
+// console.log(pagesMap)
 /**
  * 接受当前路由名称，路由配置，以及父级路由数组
  */
@@ -81,9 +84,7 @@ function buildRoute(route: string, config: RouteMetaItem, routes: RouteObject[] 
     router.Component = React.lazy(config[PageKey])
   }
   for (const key in config) {
-    if (!key.startsWith('_')) {
-      buildRoute(key, config[key], children)
-    }
+    buildRoute(key, config[key], children)
   }
   routes.push(router)
   return routes
@@ -99,5 +100,5 @@ if (notFound['./pages/404.tsx']) {
     Component: React.lazy(notFound['./pages/404.tsx']),
   })
 }
-// console.log(routes)
+console.log(routes)
 export const router = createBrowserRouter(routes)
