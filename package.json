@@ -29,6 +29,8 @@
     "eslint-plugin-n": "^17.21.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
+    "eslint-plugin-regexp": "^2.9.0",
+    "eslint-plugin-sonarjs": "^3.0.4",
     "globals": "^16.2.0",
     "tailwindcss": "^4.1.11",
     "typescript": "~5.8.3",
