@@ -12,6 +12,9 @@ const config = defineConfig(({ command, mode }) => {
     build: {
       copyPublicDir: !isHonoBuild,
     },
+    css: {
+      devSourcemap: true,
+    },
     plugins: [
       react(),
       tailwindcss(),

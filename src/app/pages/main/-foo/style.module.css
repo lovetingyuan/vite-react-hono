@@ -1,0 +1,32 @@
+.title {
+  color: red
+}
+
+.titleLarge {
+  font-size: 21px;
+
+  /**
+ sfjsldjask
+
+ */
+  .bar {
+    color: blue;
+  }
+
+  .foo {
+    color: blue;
+
+    .ffff {
+      content: 'fsdf'
+    }
+  }
+}
+
+
+.title-bold {
+  font-weight: bold;
+}
+
+.titleLarge {
+  font-size: 40px;
+}

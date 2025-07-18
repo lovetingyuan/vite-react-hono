@@ -18,6 +18,7 @@ type RouteMetaItem = {
 
 const pagesMap: RouteMetaItem = {}
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 Object.keys(pages).map(file => {
   const segments = file.split('/')
   let map = pagesMap
