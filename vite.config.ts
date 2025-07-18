@@ -19,14 +19,14 @@ const config = defineConfig(({ command, mode }) => {
         adapter: nodeAdapter,
         injectClientScript: false,
         exclude: ['!/api/**', ...defaultOptions.exclude],
-        entry: 'server/index.ts',
+        entry: './src/server/index.ts',
         handleHotUpdate(ctx) {
           return ctx.modules // avoid default full reload
         },
       }),
       isHonoBuild &&
         buildHono({
-          entry: './server/index.ts',
+          entry: './src/server/index.ts',
           output: 'server.js',
           minify: false,
           emptyOutDir: false,
