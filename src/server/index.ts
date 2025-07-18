@@ -94,7 +94,5 @@ export default app
 setTimeout(() => {
   // hono的插件会自动启动服务器
   const port = process.env.PORT || 3000
-  // console.log(`🚀 SPA Server starting on port ${port}`);
-  // console.log(`📁 Static files directory: ${STATIC_DIR}`);
   console.log(`🌐 Server will be available at http://localhost:${port}`)
 })

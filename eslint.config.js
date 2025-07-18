@@ -13,6 +13,11 @@ export default tseslint.config([
   regexpPlugin.configs['flat/recommended'],
   sonarjs.configs.recommended,
   {
+    rules: {
+      'sonarjs/no-commented-code': 'warn',
+    },
+  },
+  {
     files: ['src/app/**/*.{ts,tsx}', 'public/**/*.js'],
     extends: [
       js.configs.recommended,

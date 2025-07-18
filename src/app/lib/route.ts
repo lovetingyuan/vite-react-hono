@@ -1,32 +1,48 @@
 import { createBrowserRouter, type RouteObject } from 'react-router'
 import React from 'react'
 
+const PageKey = Symbol('page')
+const LayoutKey = Symbol('layout')
+
 type Comp = { default: React.ComponentType }
 
 const pages = import.meta.glob<Comp>(['../pages/**/index.tsx', '../pages/**/layout.tsx'])
 const notFound = import.meta.glob<Comp>('../pages/404.tsx')
 
 type RouteMetaItem = {
-  $page?: () => Promise<Comp>
-  $layout?: () => Promise<Comp>
+  [PageKey]?: () => Promise<Comp>
+  [LayoutKey]?: () => Promise<Comp>
 } & {
-  [K in string as K extends '$page' | '$layout' ? never : K]: RouteMetaItem
+  [K in string]: RouteMetaItem
 }
 
 const pagesMap: RouteMetaItem = {}
 
 Object.keys(pages).map(file => {
-  const paths = file.split('/')
+  const segments = file.split('/')
   let map = pagesMap
-  const comp = paths.pop() // index.tsx or layout.tsx
-  paths.shift() // ..
-  paths.shift() // pages
-  paths.unshift('/') // route path
-  for (const p of paths) {
-    map[p] ??= {}
-    map = map[p]
+  const comp = segments.pop() // index.tsx or layout.tsx
+  segments.shift() // ..
+  segments.shift() // pages
+  segments.unshift('/') // route path
+  for (let i = 0; i < segments.length; i++) {
+    const segment = segments[i]
+    if (segment.startsWith('[...') && segment.endsWith(']')) {
+      if (i !== segments.length - 1) {
+        throw new Error(`Splats route(${segment}) must be the last segment of the path: ${file}`)
+      }
+    }
+    if (segment.startsWith('(') && segment.endsWith(')')) {
+      const path = '../pages/' + segments.slice(1, i).join('/') + '/layout.tsx'
+      if (!pages[path]) {
+        throw new Error(`${segment} must contain layout.tsx(nested routes).`)
+      }
+    }
+    map[segment] ??= {}
+    map = map[segment]
   }
-  const key = comp === 'index.tsx' ? '$page' : '$layout'
+
+  const key = comp === 'index.tsx' ? PageKey : LayoutKey
   map[key] = pages[file]
 })
 
@@ -35,25 +51,34 @@ Object.keys(pages).map(file => {
  */
 function buildRoute(route: string, config: RouteMetaItem, routes: RouteObject[] = []) {
   const children: RouteObject[] = []
-  route = route.startsWith('[') && route.endsWith(']') ? ':' + route.slice(1, -1) : route
   const router: RouteObject = {
-    path: route,
+    // path: route,
     // Component: null,
     children,
   }
-  if (config.$layout) {
-    if (config.$page) {
+
+  if (route.startsWith('-[') && route.endsWith(']')) {
+    router.path = ':' + route.slice(2, -1) + '?'
+  } else if (route.startsWith('[...') && route.endsWith(']')) {
+    router.path = route.slice(4, -1) + '/*'
+  } else if (route.startsWith('[') && route.endsWith(']')) {
+    router.path = ':' + route.slice(1, -1)
+  } else if (route.startsWith('-')) {
+    router.path = route.slice(1) + '?'
+  } else if (!(route.startsWith('(') && route.endsWith(')'))) {
+    router.path = route
+  }
+
+  if (config[LayoutKey]) {
+    if (config[PageKey]) {
       children.push({
         index: true,
-        Component: React.lazy(config.$page),
+        Component: React.lazy(config[PageKey]),
       })
-      delete config.$page
     }
-    router.Component = React.lazy(config.$layout)
-    delete config.$layout
-  } else if (config.$page) {
-    router.Component = React.lazy(config.$page)
-    delete config.$page
+    router.Component = React.lazy(config[LayoutKey])
+  } else if (config[PageKey]) {
+    router.Component = React.lazy(config[PageKey])
   }
   for (const key in config) {
     if (!key.startsWith('_')) {
