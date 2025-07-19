@@ -4,6 +4,7 @@ import nodeAdapter from '@hono/vite-dev-server/node'
 import devServer, { defaultOptions } from '@hono/vite-dev-server'
 import buildHono from '@hono/vite-build/node'
 import tailwindcss from '@tailwindcss/vite'
+import buildInfoPlugin from './scripts/viteBuildInfoPlugin'
 
 const config = defineConfig(({ command, mode }) => {
   console.log('command:', command, 'mode:', mode, 'env:', process.env.NODE_ENV)
@@ -18,6 +19,7 @@ const config = defineConfig(({ command, mode }) => {
     plugins: [
       react(),
       tailwindcss(),
+      buildInfoPlugin(),
       devServer({
         adapter: nodeAdapter,
         injectClientScript: false,

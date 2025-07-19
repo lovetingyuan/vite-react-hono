@@ -18,7 +18,7 @@ export default tseslint.config([
     },
   },
   {
-    files: ['src/app/**/*.{ts,tsx}', 'public/**/*.js'],
+    files: ['src/app/**/*.{js,jsx,ts,tsx}', 'public/**/*.js'],
     extends: [
       js.configs.recommended,
       tseslint.configs.recommended,
@@ -31,7 +31,7 @@ export default tseslint.config([
     },
   },
   {
-    files: ['src/server/**/*.ts'],
+    files: ['src/server/**/*.{js,ts}', 'scripts/**/*.{js,ts}'],
     extends: [
       js.configs.recommended,
       tseslint.configs.recommended,
@@ -43,6 +43,11 @@ export default tseslint.config([
     },
     rules: {
       'n/no-missing-import': 'off',
+    },
+  },
+  {
+    rules: {
+      curly: 'error',
     },
   },
 ])
