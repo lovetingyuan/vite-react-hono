@@ -1,10 +1,10 @@
-import { useState } from 'react'
 import reactLogo from '../assets/react.svg'
 import viteLogo from '/vite.svg'
 import honoLogo from '../assets/hono.svg'
+import { useStore } from '../store'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { count, setCount } = useStore()
 
   return (
     <>

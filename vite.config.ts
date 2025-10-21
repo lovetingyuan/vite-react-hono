@@ -4,7 +4,15 @@ import nodeAdapter from '@hono/vite-dev-server/node'
 import devServer, { defaultOptions } from '@hono/vite-dev-server'
 import buildHono from '@hono/vite-build/node'
 import tailwindcss from '@tailwindcss/vite'
-import buildInfoPlugin from './scripts/viteBuildInfoPlugin'
+import { execSync } from 'child_process'
+
+process.env.VITE_BUILD_TIME = new Date().toLocaleString()
+try {
+  // eslint-disable-next-line sonarjs/no-os-command-from-path
+  process.env.VITE_GIT_HASH = execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim()
+} catch {
+  console.warn('Can not get Git Hash')
+}
 
 const config = defineConfig(({ command, mode }) => {
   console.log('command:', command, 'mode:', mode, 'env:', process.env.NODE_ENV)
@@ -19,7 +27,6 @@ const config = defineConfig(({ command, mode }) => {
     plugins: [
       react(),
       tailwindcss(),
-      buildInfoPlugin(),
       devServer({
         adapter: nodeAdapter,
         injectClientScript: false,
