@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
+import react from '@vitejs/plugin-react'
 import nodeAdapter from '@hono/vite-dev-server/node'
 import devServer, { defaultOptions } from '@hono/vite-dev-server'
 import buildHono from '@hono/vite-build/node'
@@ -25,7 +25,16 @@ const config = defineConfig(({ command, mode }) => {
       devSourcemap: true,
     },
     plugins: [
-      react(),
+      react({
+        babel: {
+          plugins: [
+            ['babel-plugin-react-compiler'],
+            process.env.NODE_ENV === 'development'
+              ? ['./scripts/babel-plugin-relative-path.js']
+              : null,
+          ].filter(v => !!v),
+        },
+      }),
       tailwindcss(),
       devServer({
         adapter: nodeAdapter,
