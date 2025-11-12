@@ -5,6 +5,7 @@ import devServer, { defaultOptions } from '@hono/vite-dev-server'
 import buildHono from '@hono/vite-build/node'
 import tailwindcss from '@tailwindcss/vite'
 import { execSync } from 'child_process'
+import conventionRoute from 'vite-plugin-convention-route'
 
 process.env.VITE_BUILD_TIME = new Date().toLocaleString()
 try {
@@ -35,6 +36,7 @@ const config = defineConfig(({ command, mode }) => {
           ].filter(v => !!v),
         },
       }),
+      conventionRoute(),
       tailwindcss(),
       devServer({
         adapter: nodeAdapter,

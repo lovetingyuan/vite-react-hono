@@ -1,7 +1,11 @@
 import { RouterProvider } from 'react-router'
 import ReactDOM from 'react-dom/client'
 
-import { router } from './lib/route'
+// import { router } from './lib/route'
+import routes from 'virtual:route?routePath=./pages'
+import { createBrowserRouter } from 'react-router'
+
+const router = createBrowserRouter(routes)
 
 const root = document.getElementById('root')
 
