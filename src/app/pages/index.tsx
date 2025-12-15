@@ -8,7 +8,7 @@ function App() {
 
   return (
     <>
-      <div className="flex gap-8 mt-10">
+      <div className="flex gap-8 mt-10 justify-center">
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="w-16 h-16" alt="Vite logo" />
         </a>
@@ -19,21 +19,35 @@ function App() {
           <img src={honoLogo} className="w-16 h-16" alt="Hono logo" />
         </a>
       </div>
-      <h1 className="my-5">Vite + React + Hono</h1>
-      <div className="card ">
-        <button
-          className="btn btn-accent"
-          onClick={() => {
-            setCount(count => count + 1)
-          }}
-        >
-          count is {count}
-        </button>
-        <p>
+      <h1 className="my-5 text-center">Vite + React + Hono (Click on the logos to learn more)</h1>
+      <hr className="my-5" />
+      <div className="card justify-center items-center">
+        <div className="flex gap-2">
+          <button
+            className="btn btn-accent"
+            onClick={() => {
+              setCount(count => count + 1)
+            }}
+          >
+            count is {count}
+          </button>
+          <button
+            className="btn btn-primary"
+            onClick={() => {
+              fetch('/api/test?count=' + count)
+                .then(res => res.json())
+                .then(data => {
+                  alert('success! /api/test: ' + JSON.stringify(data))
+                })
+            }}
+          >
+            click to send count to api
+          </button>
+        </div>
+        <p className="my-6">
           Edit <code>src/pages/index.tsx</code> and save to test HMR
         </p>
       </div>
-      <p className="mt-10">Click on the Vite React Hono logos to learn more</p>
     </>
   )
 }

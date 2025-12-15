@@ -4,6 +4,7 @@ import { readFile } from 'fs/promises'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { api } from './app' // 确保正确导入你的 API 路由
+import { styleText } from 'node:util'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -36,7 +37,7 @@ const staticExtensions = [
 // 中间件：日志记录
 app.use('*', async (c, next) => {
   if (process.env.NODE_ENV === 'development') {
-    console.log(`[Hono]: ${c.req.method} ${c.req.url}`)
+    console.log(`${styleText('magenta', '[Hono]')}: ${c.req.method} ${c.req.url}`)
   }
   await next()
 })
@@ -93,6 +94,10 @@ export default app
 
 setTimeout(() => {
   // hono的插件会自动启动服务器
-  const port = process.env.PORT || 3000
+  // @ts-ignore
+  const port = import.meta.env.VITE_APP_PORT || 3000
+  // @ts-ignore
+  console.log(`Build at ${new Date(import.meta.env.VITE_APP_BUILD_TIME - 0).toLocaleString()}`)
+  console.log(`🌐 Server will be available at ${styleText('cyan', 'http://localhost:' + port)}`)
   console.log(`🌐 Server will be available at http://localhost:${port}`)
 })

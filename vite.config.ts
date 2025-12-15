@@ -7,7 +7,8 @@ import tailwindcss from '@tailwindcss/vite'
 import { execSync } from 'child_process'
 import conventionRoute from 'vite-plugin-convention-route'
 
-process.env.VITE_BUILD_TIME = new Date().toLocaleString()
+process.env.VITE_APP_PORT = process.env.PORT || '3000'
+process.env.VITE_APP_BUILD_TIME = Date.now().toString()
 try {
   // eslint-disable-next-line sonarjs/no-os-command-from-path
   process.env.VITE_GIT_HASH = execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim()
@@ -53,7 +54,7 @@ const config = defineConfig(({ command, mode }) => {
           output: 'server.js',
           minify: false,
           emptyOutDir: false,
-          port: 3000,
+          port: Number(process.env.VITE_APP_PORT),
         }),
     ],
   }

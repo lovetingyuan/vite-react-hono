@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/src/app/main.css" />
     <script>
       console.log(
-        `%c Build: %VITE_BUILD_TIME% %VITE_GIT_HASH% `,
+        `%c Build: ${new Date('%VITE_APP_BUILD_TIME%' - 0).toLocaleString()} %VITE_GIT_HASH% `,
         'background-color: #4DBA87; color: #fff; padding: 2px; border-radius: 2px;'
       )
     </script>
