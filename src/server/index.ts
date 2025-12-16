@@ -99,5 +99,4 @@ setTimeout(() => {
   // @ts-ignore
   console.log(`Build at ${new Date(import.meta.env.VITE_APP_BUILD_TIME - 0).toLocaleString()}`)
   console.log(`🌐 Server will be available at ${styleText('cyan', 'http://localhost:' + port)}`)
-  console.log(`🌐 Server will be available at http://localhost:${port}`)
 })
