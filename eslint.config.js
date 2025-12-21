@@ -13,20 +13,15 @@ export default defineConfig([
   regexpPlugin.configs['flat/recommended'],
   sonarjs.configs.recommended,
   {
-    rules: {
-      'sonarjs/no-commented-code': 'warn',
-    },
-  },
-  {
     files: ['src/app/**/*.{ts,tsx}'],
     extends: [
       js.configs.recommended,
       tseslint.configs.recommended,
-      reactHooks.configs['recommended-latest'],
+      reactHooks.configs.flat.recommended,
       reactRefresh.configs.vite,
     ],
     languageOptions: {
-      ecmaVersion: 2020,
+      ecmaVersion: 2022,
       globals: globals.browser,
     },
   },
@@ -38,7 +33,7 @@ export default defineConfig([
       nodePlugin.configs['flat/recommended-script'],
     ],
     languageOptions: {
-      ecmaVersion: 2020,
+      ecmaVersion: 2022,
       globals: globals.nodeBuiltin,
     },
     rules: {
@@ -48,6 +43,7 @@ export default defineConfig([
   {
     rules: {
       curly: 'error',
+      'sonarjs/no-commented-code': 'warn',
     },
   },
 ])

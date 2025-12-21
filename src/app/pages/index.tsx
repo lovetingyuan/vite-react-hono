@@ -2,53 +2,38 @@ import reactLogo from '../assets/react.svg'
 import viteLogo from '/vite.svg'
 import honoLogo from '../assets/hono.svg'
 import { useStore } from '../store'
-import { useEffect, useState } from 'react'
-
-interface Item {
-  id: number
-  name: string
-}
+import { useState } from 'react'
+import { api } from '../client'
+import { useItems } from '../swr'
 
 function App() {
   const { count, setCount } = useStore()
-  const [items, setItems] = useState<Item[]>([])
-  const [loading, setLoading] = useState(false)
+  const { items = [], isLoading, mutate } = useItems()
   const [newItemName, setNewItemName] = useState('')
-
-  // Fetch list
-  const fetchItems = async () => {
-    setLoading(true)
-    try {
-      const res = await fetch('/api/items')
-      const data = await res.json()
-      setItems(data)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   // Add item
   const addItem = async () => {
-    if (!newItemName) return
-    const res = await fetch('/api/items', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: newItemName }),
+    if (!newItemName) {
+      return
+    }
+    const res = await api.items.$post({
+      json: { name: newItemName },
     })
-    const newItem = await res.json()
-    setItems([...items, newItem])
-    setNewItemName('')
+    if (res.ok) {
+      mutate() // 刷新 SWR 缓存
+      setNewItemName('')
+    }
   }
 
   // Delete item
   const deleteItem = async (id: number) => {
-    await fetch(`/api/items/${id}`, { method: 'DELETE' })
-    setItems(items.filter(item => item.id !== id))
+    const res = await api.items[':id'].$delete({
+      param: { id: String(id) },
+    })
+    if (res.ok) {
+      mutate() // 刷新 SWR 缓存
+    }
   }
-
-  useEffect(() => {
-    fetchItems()
-  }, [])
 
   return (
     <>
@@ -79,12 +64,14 @@ function App() {
           </button>
           <button
             className="btn btn-primary"
-            onClick={() => {
-              fetch('/api/test?count=' + count)
-                .then(res => res.json())
-                .then(data => {
-                  alert('success! /api/test: ' + JSON.stringify(data))
-                })
+            onClick={async () => {
+              const res = await api.test.$get({
+                query: { count: String(count) },
+              })
+              if (res.ok) {
+                const data = await res.json()
+                alert('success! /api/test: ' + JSON.stringify(data))
+              }
             }}
           >
             click to send count to api
@@ -109,7 +96,7 @@ function App() {
             </button>
           </div>
 
-          {loading ? (
+          {isLoading ? (
             <p className="text-center">Loading...</p>
           ) : (
             <ul className="space-y-2 text-left">
@@ -129,14 +116,10 @@ function App() {
               )}
             </ul>
           )}
-          <button className="btn btn-ghost btn-sm w-full mt-4" onClick={fetchItems}>
+          <button className="btn btn-ghost btn-sm w-full mt-4" onClick={() => mutate()}>
             Refresh List
           </button>
         </div>
-
-        <p className="my-6">
-          Edit <code>src/pages/index.tsx</code> and save to test HMR
-        </p>
       </div>
     </>
   )

@@ -1,9 +1,13 @@
+/**
+ * TYPE FIX APPLIED - VITE_APP_PORT & VITE_APP_BUILD_TIME
+ */
 import { Hono } from 'hono'
 import { existsSync } from 'fs'
 import { readFile } from 'fs/promises'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { api } from './app' // 确保正确导入你的 API 路由
+// eslint-disable-next-line n/no-unsupported-features/node-builtins
 import { styleText } from 'node:util'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -94,9 +98,8 @@ export default app
 
 setTimeout(() => {
   // hono的插件会自动启动服务器
-  // @ts-ignore
   const port = import.meta.env.VITE_APP_PORT || 3000
-  // @ts-ignore
-  console.log(`Build at ${new Date(import.meta.env.VITE_APP_BUILD_TIME - 0).toLocaleString()}`)
+  const buildTime = import.meta.env.VITE_APP_BUILD_TIME
+  console.log(`Build at ${buildTime ? new Date(Number(buildTime)).toLocaleString() : 'unknown'}`)
   console.log(`🌐 Server will be available at ${styleText('cyan', 'http://localhost:' + port)}`)
 })
