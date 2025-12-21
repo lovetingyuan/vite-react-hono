@@ -30,7 +30,6 @@
     ],
   },
   "include": [
-    "src/app/**/*.ts",
-    "src/app/**/*.tsx"
+    "src/app",
   ]
 }
