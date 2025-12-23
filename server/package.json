@@ -1,0 +1,18 @@
+{
+  "name": "@vite-react-hono/server",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build --mode=hono",
+    "lint": "eslint .",
+    "preview": "cd dist && node ./server"
+  },
+  "dependencies": {
+    "@hono/zod-validator": "^0.7.6",
+    "hono": "^4.10.1",
+    "zod": "^4.2.1"
+  },
+  "devDependencies": {}
+}

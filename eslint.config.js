@@ -13,7 +13,7 @@ export default defineConfig([
   regexpPlugin.configs['flat/recommended'],
   sonarjs.configs.recommended,
   {
-    files: ['src/app/**/*.{ts,tsx}'],
+    files: ['app/src/**/*.{ts,tsx}'],
     extends: [
       js.configs.recommended,
       tseslint.configs.recommended,
@@ -26,7 +26,7 @@ export default defineConfig([
     },
   },
   {
-    files: ['src/server/**/*.{js,ts}', 'scripts/**/*.{js,ts}'],
+    files: ['server/src/**/*.{js,ts}', 'scripts/**/*.{js,ts}'],
     extends: [
       js.configs.recommended,
       tseslint.configs.recommended,
