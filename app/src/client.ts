@@ -1,5 +1,5 @@
 import { hc } from 'hono/client'
-import type { AppType } from '../server/app'
+import type { AppType } from 'server/app'
 
 // 直接导出 hc 创建的客户端。
 // 由于后端使用 app.route('/api', api) 将路由挂载在 /api 下，

@@ -1,18 +1,28 @@
 {
-  "name": "@vite-react-hono/server",
+  "name": "server",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "exports": {
+    "./app": {
+      "types": "./dist/app.d.ts",
+      "default": "./src/app.ts"
+    }
+  },
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build --mode=hono",
+    "dev": "vite --config ../vite.server.config.ts",
+    "build": "tsc -b ../tsconfig.server.json && vite build --config ../vite.server.config.ts --mode=hono",
     "lint": "eslint .",
-    "preview": "cd dist && node ./server"
+    "preview": "cd ../dist && node ./server",
+    "clean": "rm -rf ../dist node_modules"
   },
   "dependencies": {
     "@hono/zod-validator": "^0.7.6",
     "hono": "^4.10.1",
     "zod": "^4.2.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@hono/vite-build": "^1.8.0",
+    "@hono/vite-dev-server": "^0.23.0"
+  }
 }

@@ -33,5 +33,8 @@ const api = new Hono()
     return c.json({ success: true })
   })
 
+/**
+ * api definition
+ */
 export type AppType = typeof api
 export { api }

@@ -16,6 +16,7 @@
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
     "noEmit": true,
+    "composite": true,
     "jsx": "react-jsx",
     /* Linting */
     "strict": true,
@@ -23,14 +24,14 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
-    "rootDirs": [
-      "src",
-      "css-module-types/src"
-    ],
+    "noUncheckedSideEffectImports": true
   },
   "include": [
-    "src",
-    "vite.config.ts"
+    "app/src"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.server.json"
+    }
   ]
 }

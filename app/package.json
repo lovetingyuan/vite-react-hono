@@ -1,13 +1,14 @@
 {
-  "name": "@vite-react-hono/app",
+  "name": "app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b ../tsconfig.json && vite build && vite build --mode=hono",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview --config ../vite.app.config.ts",
+    "clean": "rm -rf ../dist node_modules"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -15,8 +16,20 @@
     "react-atomic-store": "^0.0.8",
     "react-dom": "^19.2.0",
     "react-router": "^7.9.4",
+    "server": "file:../server",
     "swr": "^2.3.8",
     "tailwind-merge": "^3.4.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.11",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.1.0",
+    "babel-plugin-react-compiler": "^1.0.0",
+    "daisyui": "^5.3.7",
+    "eslint-plugin-react-hooks": "^7.0.0",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "tailwindcss": "^4.1.16",
+    "vite-plugin-convention-route": "^0.0.1"
+  }
 }
