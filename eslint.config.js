@@ -1,12 +1,12 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import tseslint from 'typescript-eslint'
-import { globalIgnores, defineConfig } from 'eslint/config'
-import nodePlugin from 'eslint-plugin-n'
-import * as regexpPlugin from 'eslint-plugin-regexp'
-import sonarjs from 'eslint-plugin-sonarjs'
+import js from '@eslint/js';
+import globals from 'globals';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import tseslint from 'typescript-eslint';
+import { globalIgnores, defineConfig } from 'eslint/config';
+import nodePlugin from 'eslint-plugin-n';
+import * as regexpPlugin from 'eslint-plugin-regexp';
+import sonarjs from 'eslint-plugin-sonarjs';
 
 export default defineConfig([
   globalIgnores(['dist']),
@@ -26,12 +26,8 @@ export default defineConfig([
     },
   },
   {
-    files: ['server/src/**/*.{js,ts}', 'scripts/**/*.{js,ts}'],
-    extends: [
-      js.configs.recommended,
-      tseslint.configs.recommended,
-      nodePlugin.configs['flat/recommended-script'],
-    ],
+    files: ['server/src/**/*.{js,ts}', 'scripts/*.js', 'vite.config.ts'],
+    extends: [js.configs.recommended, tseslint.configs.recommended, nodePlugin.configs['flat/recommended-script']],
     languageOptions: {
       ecmaVersion: 2022,
       globals: globals.nodeBuiltin,
@@ -46,4 +42,4 @@ export default defineConfig([
       'sonarjs/no-commented-code': 'warn',
     },
   },
-])
+]);

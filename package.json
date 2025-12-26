@@ -9,13 +9,15 @@
   ],
   "scripts": {
     "dev": "npm run dev --workspace=app",
-    "build": "npm run build --workspace=app",
+    "typecheck": "tsc --noEmit",
+    "build": "npm run typecheck && npm run build --workspaces",
     "lint": "eslint .",
-    "preview": "npm run preview --workspace=server"
+    "preview": "cd dist && node server"
   },
   "devDependencies": {
     "@eslint/js": "^9.38.0",
     "@types/node": "^24.0.4",
+    "baseline-browser-mapping": "^2.9.11",
     "eslint": "^9.38.0",
     "eslint-plugin-n": "^17.23.0",
     "eslint-plugin-regexp": "^2.10.0",
