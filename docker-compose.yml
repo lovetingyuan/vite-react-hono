@@ -1,0 +1,21 @@
+# Docker Compose configuration for deployment
+services:
+  app:
+    # Build the image using the Dockerfile in the current directory
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # Map the container port 3000 to the host port 3000
+    ports:
+      - "3000:3000"
+    # Set production environment variables
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    # Ensure the container restarts automatically on failure or system reboot
+    restart: always
+
+# Define a custom network for the services
+networks:
+  default:
+    name: vite-react-hono-network

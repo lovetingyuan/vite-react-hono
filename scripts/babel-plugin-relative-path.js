@@ -63,8 +63,19 @@ const doJSXOpeningElement = (node, option) => {
   const line = node.loc?.start.line;
   const column = node.loc?.start.column;
 
+  const attributeName = 'data-inspector-relative-path';
+
+  // Prevent duplicate attributes
+  if (
+    node.attributes.some(
+      (attr) => attr.type === 'JSXAttribute' && attr.name.name === attributeName
+    )
+  ) {
+    return { result: node };
+  }
+
   const relativePathAttr = jsxAttribute(
-    jsxIdentifier('data-inspector-relative-path'),
+    jsxIdentifier(attributeName),
     stringLiteral(
       relativePath.replace(/\\/g, '/') +
         (isNil(line) ? '' : ':' + line) +

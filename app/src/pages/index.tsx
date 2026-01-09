@@ -1,39 +1,12 @@
-import reactLogo from '../assets/react.svg'
-import viteLogo from '/vite.svg'
-import honoLogo from '../assets/hono.svg'
-import { useStore } from '../store'
-import { useState } from 'react'
-import { api } from '../client'
-import { useItems } from '../swr'
+import reactLogo from '../assets/react.svg';
+import viteLogo from '/vite.svg';
+import honoLogo from '../assets/hono.svg';
+import { useStore } from '../store';
+import { api } from '../client';
+import { toast } from '../components/Toast';
 
 function App() {
-  const { count, setCount } = useStore()
-  const { items = [], isLoading, mutate } = useItems()
-  const [newItemName, setNewItemName] = useState('')
-
-  // Add item
-  const addItem = async () => {
-    if (!newItemName) {
-      return
-    }
-    const res = await api.items.$post({
-      json: { name: newItemName },
-    })
-    if (res.ok) {
-      mutate() // 刷新 SWR 缓存
-      setNewItemName('')
-    }
-  }
-
-  // Delete item
-  const deleteItem = async (id: number) => {
-    const res = await api.items[':id'].$delete({
-      param: { id: String(id) },
-    })
-    if (res.ok) {
-      mutate() // 刷新 SWR 缓存
-    }
-  }
+  const { count, setCount } = useStore();
 
   return (
     <>
@@ -57,7 +30,7 @@ function App() {
           <button
             className="btn btn-accent"
             onClick={() => {
-              setCount((count: number) => count + 1)
+              setCount((count: number) => count + 1);
             }}
           >
             count is {count}
@@ -67,62 +40,21 @@ function App() {
             onClick={async () => {
               const res = await api.test.$get({
                 query: { count: String(count) },
-              })
+              });
               if (res.ok) {
-                const data = await res.json()
-                alert('success! /api/test: ' + JSON.stringify(data))
+                const data = await res.json();
+                toast.success('API response: ' + data.text);
+              } else {
+                toast.error('API call failed');
               }
             }}
           >
             click to send count to api
           </button>
         </div>
-
-        {/* CRUD Example */}
-        <div className="mt-10 w-full max-w-md p-6 bg-base-200 rounded-lg shadow-xl">
-          <h2 className="text-2xl font-bold mb-4">API Example: CRUD List</h2>
-
-          <div className="flex gap-2 mb-4">
-            <input
-              type="text"
-              placeholder="Enter item name..."
-              className="input input-bordered grow"
-              value={newItemName}
-              onChange={e => setNewItemName(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && addItem()}
-            />
-            <button className="btn btn-secondary" onClick={addItem}>
-              Add
-            </button>
-          </div>
-
-          {isLoading ? (
-            <p className="text-center">Loading...</p>
-          ) : (
-            <ul className="space-y-2 text-left">
-              {items.map(item => (
-                <li
-                  key={item.id}
-                  className="flex justify-between items-center p-3 bg-base-100 rounded shadow-sm"
-                >
-                  <span>{item.name}</span>
-                  <button className="btn btn-error btn-xs" onClick={() => deleteItem(item.id)}>
-                    Delete
-                  </button>
-                </li>
-              ))}
-              {items.length === 0 && (
-                <li className="text-center text-gray-500">No data available</li>
-              )}
-            </ul>
-          )}
-          <button className="btn btn-ghost btn-sm w-full mt-4" onClick={() => mutate()}>
-            Refresh List
-          </button>
-        </div>
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
