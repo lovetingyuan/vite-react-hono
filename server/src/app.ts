@@ -1,4 +1,5 @@
 import { Hono } from 'hono';
+import todoRoute from './routes/todo';
 
 // We strongly recommend that you use the full API path to define routes.
 const api = new Hono()
@@ -7,7 +8,8 @@ const api = new Hono()
   })
   .get('/test', (c) => {
     return c.json({ text: 'this is api response, count is ' + c.req.query('count') });
-  });
+  })
+  .route('/todos', todoRoute);
 
 /**
  * api definition

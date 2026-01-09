@@ -11,7 +11,7 @@
     "dev": "npm run dev --workspace=app",
     "typecheck": "tsc --noEmit",
     "build": "npm run typecheck && npm run build --workspaces",
-    "lint": "eslint .",
+    "lint": "eslint . --fix",
     "preview": "cd dist && node server"
   },
   "devDependencies": {
