@@ -32,8 +32,14 @@ export default defineConfig([
       ecmaVersion: 2022,
       globals: globals.nodeBuiltin,
     },
+    settings: {
+      n: {
+        version: '>=22.21.0',
+      },
+    },
     rules: {
       'n/no-missing-import': 'off',
+      'n/no-unsupported-features/node-builtins': ['error', { allowExperimental: true }],
     },
   },
   {
