@@ -43,7 +43,6 @@ const methods = getStoreMethods() as unknown as {
 };
 
 export const addToast = (message: string, options: ToastOptions = {}) => {
-  // eslint-disable-next-line sonarjs/pseudo-random
   const id = options.id || Math.random().toString(36).substring(2, 9);
   const { type = 'info', duration = 3000, closable = true, position = 'toast-top toast-end' } = options;
 

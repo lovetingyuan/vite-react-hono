@@ -4,7 +4,6 @@
  * 相比原版把行数和列数信息附加到了路径后面，可以直接定位到具体代码位置
  */
 import { relative } from 'path';
-// eslint-disable-next-line n/no-extraneous-import
 import { jsxAttribute, jsxIdentifier, stringLiteral } from '@babel/types';
 
 const isNil = (value) => value === null || value === undefined;

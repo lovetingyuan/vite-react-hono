@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "vite build",
-    "lint": "eslint ."
+    "lint": "oxlint --fix ."
   },
   "dependencies": {
     "@hono/zod-validator": "^0.7.6",

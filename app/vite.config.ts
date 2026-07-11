@@ -10,7 +10,6 @@ import conventionRoute from 'vite-plugin-convention-route';
 process.env.VITE_APP_PORT = process.env.PORT || '3000';
 process.env.VITE_APP_BUILD_TIME = Date.now().toString();
 try {
-  // eslint-disable-next-line sonarjs/no-os-command-from-path
   process.env.VITE_GIT_HASH = execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim();
 } catch {
   process.env.VITE_GIT_HASH = 'n/a';
