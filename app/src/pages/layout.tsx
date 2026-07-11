@@ -3,13 +3,12 @@ import { useEffect } from 'react';
 import NavBar from './_components/NavBar';
 import ThemeController from '../components/Theme/ThemeController';
 import { ToastContainer, toast } from '../components/Toast';
-import { api } from '../client';
 
 export default function Home() {
   useEffect(() => {
     const checkHealth = async () => {
       try {
-        const res = await api.health.$get();
+        const res = await fetch('/health');
         if (!res.ok) {
           toast.error('服务器目前存在问题');
         }

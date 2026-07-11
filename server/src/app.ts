@@ -8,9 +8,6 @@ const counterQuerySchema = z.object({
 
 // We strongly recommend that you use the full API path to define routes.
 const api = new Hono()
-  .get('/health', (c) => {
-    return c.json({ status: 'ok' });
-  })
   .get('/counter', zValidator('query', counterQuerySchema), (c) => {
     const { count } = c.req.valid('query');
     return c.json({

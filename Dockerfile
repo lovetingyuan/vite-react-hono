@@ -1,6 +1,6 @@
 # Stage 1: Build stage
-# Use node:22-slim as the base image for building
-FROM node:22-slim AS builder
+# Use the same minimum Node patch version declared in package.json engines.
+FROM node:22.21.0-slim AS builder
 
 WORKDIR /app
 
@@ -20,8 +20,8 @@ COPY . .
 RUN npm run build
 
 # Stage 2: Production stage
-# Use a fresh node:22-slim image to keep the final image small
-FROM node:22-slim
+# Use the same pinned Node patch version for runtime consistency.
+FROM node:22.21.0-slim
 
 WORKDIR /app
 

@@ -47,6 +47,11 @@ app.get('/health', c => {
 // 1. 优先处理 API 路由
 app.route('/api', api)
 
+// Unknown API routes should not fall back to the SPA shell.
+app.all('/api/*', c => {
+  return c.notFound()
+})
+
 // 2. 静态文件处理，hono的vite插件已经处理了静态文件的服务
 
 // 3. SPA 路由回退处理
