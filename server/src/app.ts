@@ -1,15 +1,23 @@
 import { Hono } from 'hono';
-import todoRoute from './routes/todo';
+import { z } from 'zod';
+import { zValidator } from '@hono/zod-validator';
+
+const counterQuerySchema = z.object({
+  count: z.coerce.number().int().safe(),
+});
 
 // We strongly recommend that you use the full API path to define routes.
 const api = new Hono()
   .get('/health', (c) => {
     return c.json({ status: 'ok' });
   })
-  .get('/test', (c) => {
-    return c.json({ text: 'this is api response, count is ' + c.req.query('count') });
-  })
-  .route('/todos', todoRoute);
+  .get('/counter', zValidator('query', counterQuerySchema), (c) => {
+    const { count } = c.req.valid('query');
+    return c.json({
+      count,
+      text: `Server received count ${count}`,
+    });
+  });
 
 /**
  * api definition

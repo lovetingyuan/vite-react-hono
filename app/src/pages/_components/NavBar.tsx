@@ -12,11 +12,6 @@ export default function NavBar() {
       <div className="flex-none gap-2">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <Link to="/todo" className="link link-hover">
-              todo
-            </Link>
-          </li>
-          <li>
             <Link to="/about" className="link link-hover">
               about
             </Link>
