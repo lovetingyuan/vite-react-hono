@@ -26,6 +26,7 @@
     ],
   },
   "include": [
-    "src"
+    "src",
+    "env.d.ts"
   ]
 }

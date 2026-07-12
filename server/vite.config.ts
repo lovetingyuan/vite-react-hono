@@ -1,18 +1,18 @@
-import { defineConfig } from 'vite';
-import buildHono from '@hono/vite-build/node';
-import { execSync } from 'child_process';
+import { defineConfig } from 'vite'
+import buildHono from '@hono/vite-build/node'
+import { execSync } from 'child_process'
 
-process.env.VITE_APP_PORT = process.env.PORT || '3000';
-process.env.VITE_APP_BUILD_TIME = Date.now().toString();
+process.env.VITE_APP_PORT = process.env.PORT || '3000'
+process.env.VITE_APP_BUILD_TIME = Date.now().toString()
 try {
-  process.env.VITE_GIT_HASH = execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim();
+  process.env.VITE_GIT_HASH = execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim()
 } catch {
-  process.env.VITE_GIT_HASH = 'n/a';
-  console.warn('Can not get Git Hash');
+  process.env.VITE_GIT_HASH = 'n/a'
+  console.warn('Can not get Git Hash')
 }
 
 const config = defineConfig(({ command, mode }) => {
-  console.log('command:', command, 'mode:', mode, 'env:', process.env.NODE_ENV);
+  console.log('command:', command, 'mode:', mode, 'env:', process.env.NODE_ENV)
   return {
     build: {
       outDir: '../dist',
@@ -27,7 +27,7 @@ const config = defineConfig(({ command, mode }) => {
         staticPaths: ['dist'],
       }),
     ],
-  };
-});
+  }
+})
 
-export default config;
+export default config
